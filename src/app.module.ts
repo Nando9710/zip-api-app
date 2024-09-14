@@ -4,6 +4,9 @@ import { AppService } from "./app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ModulesModule } from './modules/modules.module';
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import { AuthInterceptor } from "./common/interceptors/auth/auth.interceptor";
+import { AuthModule } from "./modules/auth/auth.module";
 
 @Module({
   imports: [
@@ -23,9 +26,13 @@ import { ModulesModule } from './modules/modules.module';
       }),
       inject: [ConfigService],
     }),
-    ModulesModule
+    ModulesModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_INTERCEPTOR,
+    useClass: AuthInterceptor,
+  }],
 })
 export class AppModule {}

@@ -17,7 +17,6 @@ export class UserService {
 
   findAll(): Promise<User[]> {
     return this.userRepository.find()
-    // return `This action returns all file`;
   }
 
   async findOne(email: string): Promise<User> {
