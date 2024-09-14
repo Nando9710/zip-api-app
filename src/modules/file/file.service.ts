@@ -9,7 +9,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 export class FileService {
   constructor (
     @InjectRepository(Files)
-    private filesRepository: Repository<Files>,
+    private readonly filesRepository: Repository<Files>,
   ) {}
   async create(createFileDto: CreateFileDto) {
     return await this.filesRepository.save(createFileDto).then(res => res);
