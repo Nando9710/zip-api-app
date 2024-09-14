@@ -12,7 +12,7 @@ export class Files {
   description: string;
 
   @Column()
-  author: string;
+  user: string;
 
   @Column({ default: null, type: "datetime" })
   created_at?: Date;

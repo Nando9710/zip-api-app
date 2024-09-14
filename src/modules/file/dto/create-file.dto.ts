@@ -8,5 +8,5 @@ export class CreateFileDto {
   description: string;
 
   @IsString()
-  author: string;
+  user: string;
 }
