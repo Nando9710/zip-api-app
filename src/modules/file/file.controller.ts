@@ -23,18 +23,18 @@ export class FileController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.fileService.findOne(+id);
+    return this.fileService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.fileService.update(+id, updateFileDto);
+    return this.fileService.update(id, updateFileDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.fileService.remove(+id);
+    return this.fileService.remove(id);
   }
 }

@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsString, IsUUID } from "class-validator";
 
 export class CreateFileDto {
   @IsString()
@@ -8,5 +8,6 @@ export class CreateFileDto {
   description: string;
 
   @IsString()
-  user: string;
+  @IsUUID()
+  userId: string;
 }

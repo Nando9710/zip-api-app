@@ -1,42 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { Files } from './entities/file.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class FileService {
   constructor (
     @InjectRepository(Files)
     private readonly filesRepository: Repository<Files>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
   async create(createFileDto: CreateFileDto) {
-    return await this.filesRepository.save(createFileDto).then(res => res);
-    // return 'This action adds a new file';
+    const user = await this.userRepository.findOneBy({ id: createFileDto.userId });
+
+    if (!user) throw new NotFoundException(`User with id: ${createFileDto.userId} not found`);
+
+    return await this.filesRepository.save({ ...createFileDto, user }).then(res => res);
   }
 
-  findAll(): Promise<Files[]> {
-    return this.filesRepository.find()
-    // return `This action returns all file`;
+  async findAll(): Promise<Files[]> {
+    return await this.filesRepository.find()
   }
 
-  findOne(id: number): Promise<Files> {
-    return this.filesRepository.findOne(id as FindOneOptions<Files>);
-    // return `This action returns a #${id} file`;
+  async findOne(id: string): Promise<Files> {
+    return await this.filesRepository.findOne(id as FindOneOptions<Files>);
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
-    return `This action updates a #${id} file`;
+  async update(id: string, updateFileDto: UpdateFileDto) {
+    return await this.filesRepository.update(id, updateFileDto).then(res => res);
   }
 
-  // async update(id: number, data: object): Promise<Book | UpdateResult | undefined> {
-  //   const book = await this.findOne(id).then(res => res);
-  //   if (book) return await this.booksRepository.update(id, data).then(res => res);
-  //   return;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} file`;
+  async remove(id: string) {
+    return await this.filesRepository.delete(id);
   }
 }
