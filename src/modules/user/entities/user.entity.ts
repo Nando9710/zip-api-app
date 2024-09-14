@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
 import { Files } from '../../file/entities/file.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -25,5 +25,6 @@ export class User {
   updated_at?: Date;
 
   @OneToMany(() => Files, files => files.user)
+  @JoinColumn()
   files?: Files[];
 }

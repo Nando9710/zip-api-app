@@ -15,21 +15,28 @@ export class UserService {
     return await this.userRepository.save(createUserDto as DeepPartial<User>).then(res => res).catch(e => console.log(e));
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find()
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find()
   }
 
-  async findOne(email: string): Promise<User> {
+  async findOneById(id: string): Promise<User> {
+    return await this.userRepository.findOne({
+      where: { id },
+      relations: ['files']
+    } as FindOneOptions<User>);
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { email }
     } as FindOneOptions<User>);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto).then(res => res);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.userRepository.delete(id);
   }
 }

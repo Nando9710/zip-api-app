@@ -11,7 +11,7 @@ export class CreateUserDto {
 
   @IsEmail()
   @IsNotEmpty({ "message": "Email field cannot be empty" })
-  email: number;
+  email: string;
 
   @IsString()
   @IsNotEmpty({ "message": "Password field cannot be empty" })
