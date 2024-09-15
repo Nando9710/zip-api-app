@@ -3,11 +3,11 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { Files } from './entities/file.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
-import { ConfigService } from '@nestjs/config';
 import { FileUploaded } from 'src/common/interfaces/file/file-uploaded';
 import { SUPABASE_CONFIG } from 'supabase.config';
+import AdmZip from 'adm-zip';
 
 @Injectable()
 export class FileService {
@@ -33,6 +33,16 @@ export class FileService {
       })
 
     return fileUploaded
+  }
+
+  async convertFileToZip(fileName: string, file: Buffer) {
+    const admZip = new AdmZip();
+
+    await admZip.addFile(fileName, file, "file converted");
+
+    const zipFileName = `${fileName.split('.').slice(0, -1).join('.')}.zip`;
+
+    return { name: zipFileName, fileZip: admZip.toBuffer() };
   }
 
   async findAll(): Promise<Files[]> {

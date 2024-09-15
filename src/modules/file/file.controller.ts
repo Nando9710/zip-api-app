@@ -22,12 +22,13 @@ export class FileController {
   async uploadFile(@UploadedFile(
     new ParseFilePipe({
       validators: [
-        new MaxFileSizeValidator({ maxSize: 50000 }),
+        new MaxFileSizeValidator({ maxSize: 5000000 }),
         // new FileTypeValidator({ fileType: 'image/jpeg' }),
       ],
     }),
   ) file: Express.Multer.File, @Req() req): Promise<unknown> {
-    const fileUpdated: FileUploaded = await this.fileService.uploadFileToSupabase(file.originalname, file.buffer);
+    const { name, fileZip } = await this.fileService.convertFileToZip(file.originalname, file.buffer);
+    const fileUpdated: FileUploaded = await this.fileService.uploadFileToSupabase(name, fileZip);
 
     const createFileDto: CreateFileDto = { ...req?.body, path: fileUpdated.data.path };
     return await this.fileService.create(createFileDto);
