@@ -8,6 +8,9 @@ export class CreateFileDto {
   description: string;
 
   @IsString()
+  path: string;
+
+  @IsString()
   @IsUUID()
   userId: string;
 }

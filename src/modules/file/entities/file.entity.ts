@@ -12,6 +12,9 @@ export class Files {
   @Column()
   description: string;
 
+  @Column()
+  path: string;
+
   @Column({ default: null, type: "datetime" })
   created_at?: Date;
 
