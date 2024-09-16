@@ -1,5 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
 import { Files } from '../../file/entities/file.entity';
+import { IsOptional } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -16,6 +18,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude()
   password?: string;
 
   @Column({ default: null, type: "datetime" })
@@ -26,5 +29,6 @@ export class User {
 
   @OneToMany(() => Files, files => files.user)
   @JoinColumn()
+  @IsOptional()
   files?: Files[];
 }
