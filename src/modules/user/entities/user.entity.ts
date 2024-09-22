@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Files } from '../../file/entities/file.entity';
 import { IsOptional } from 'class-validator';
 import { Exclude } from 'class-transformer';
@@ -31,4 +31,12 @@ export class User {
   @JoinColumn()
   @IsOptional()
   files?: Files[];
+
+  @ManyToOne(() => User, (user) => user.children)
+  @JoinColumn()
+  parent: User;
+
+  @OneToMany(() => User, (user) => user.parent)
+  @JoinColumn()
+  children: User[];
 }
