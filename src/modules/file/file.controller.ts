@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, Req, Request } from '@nestjs/common';
 import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth-guard/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploaded } from 'src/common/interfaces/file/file-uploaded';
+import { Request as ExpressRequest } from 'express';
 
 @Controller('file')
 export class FileController {
@@ -30,14 +31,18 @@ export class FileController {
     const { name, fileZip } = await this.fileService.convertFileToZip(file.originalname, file.buffer);
     const fileUpdated: FileUploaded = await this.fileService.uploadFileToSupabase(name, fileZip);
 
-    const createFileDto: CreateFileDto = { ...req?.body, path: fileUpdated.data.path };
+    const createFileDto: CreateFileDto = {
+      ...req?.body,
+      name: file.originalname,
+      path: fileUpdated.data.path
+    };
     return await this.fileService.create(createFileDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return this.fileService.findAll();
+  async findAll(@Request() req: ExpressRequest) {
+    return this.fileService.findAll(req);
   }
 
   @UseGuards(JwtAuthGuard)

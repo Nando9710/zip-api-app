@@ -3,10 +3,11 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { Files } from './entities/file.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository, FindManyOptions } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 import { FileUploaded } from 'src/common/interfaces/file/file-uploaded';
 import { SUPABASE_CONFIG } from 'supabase.config';
+import { Request } from 'express'
 import AdmZip from 'adm-zip';
 
 @Injectable()
@@ -45,8 +46,11 @@ export class FileService {
     return { name: zipFileName, fileZip: admZip.toBuffer() };
   }
 
-  async findAll(): Promise<Files[]> {
-    return await this.filesRepository.find()
+  async findAll(req: Request): Promise<Files[]> {
+    const user = req.user as { payload: Partial<User> };
+    return await this.filesRepository.find({
+      where: { user: { id: user?.payload?.id } },
+    } as FindManyOptions<Files>);
   }
 
   async findOne(id: string): Promise<Files> {

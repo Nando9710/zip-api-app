@@ -1,4 +1,4 @@
-import { IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class CreateFileDto {
   @IsString()
@@ -11,6 +11,7 @@ export class CreateFileDto {
   path: string;
 
   @IsString()
+  @IsNotEmpty({ "message": "UserId field cannot be empty" })
   @IsUUID()
   userId: string;
 }
