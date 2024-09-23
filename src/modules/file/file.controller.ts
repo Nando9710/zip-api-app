@@ -59,9 +59,9 @@ export class FileController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Request() req: ExpressRequest) {
     await this.fileService.removeFileFromSupabase(id);
 
-    return await this.fileService.remove(id);
+    return await this.fileService.remove(id, req);
   }
 }

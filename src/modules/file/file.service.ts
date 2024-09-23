@@ -63,8 +63,9 @@ export class FileService {
     return await this.filesRepository.update(id, updateFileDto).then(res => res);
   }
 
-  async remove(id: string) {
-    return await this.filesRepository.delete(id);
+  async remove(id: string, req?: Request) {
+    await this.filesRepository.delete(id);
+    return await this.findAll(req);
   }
 
   async removeFileFromSupabase(id: string): Promise<any> {
