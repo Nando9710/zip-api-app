@@ -13,8 +13,8 @@ export class FileController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createFileDto: CreateFileDto) {
-    return this.fileService.create(createFileDto);
+  async create(@Body() createFileDto: CreateFileDto) {
+    return await this.fileService.create(createFileDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -24,7 +24,6 @@ export class FileController {
     new ParseFilePipe({
       validators: [
         new MaxFileSizeValidator({ maxSize: 5000000 }),
-        // new FileTypeValidator({ fileType: 'image/jpeg' }),
       ],
     }),
   ) file: Express.Multer.File, @Req() req): Promise<unknown> {
@@ -42,19 +41,19 @@ export class FileController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Request() req: ExpressRequest) {
-    return this.fileService.findAll(req);
+    return await this.fileService.findAll(req);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.fileService.findOne(id);
+    return await this.fileService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.fileService.update(id, updateFileDto);
+    return await this.fileService.update(id, updateFileDto);
   }
 
   @UseGuards(JwtAuthGuard)
