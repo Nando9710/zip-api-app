@@ -14,8 +14,4 @@ Run `pnpm seed` to seed the first user in the database.
 
 ## Run app locally with nestjs
 
-Checkout to branch `production`. Run `pnpm run start:dev` for a dev server in `http://localhost:3000/`.
-
-## Running unit tests
-
-Run `pnpm test` to execute the unit tests...
+Checkout to branch `production`. Run `pnpm run start` for a dev server in `http://localhost:3000/`.
