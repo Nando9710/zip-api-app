@@ -22,7 +22,6 @@ export class UserService {
   }
 
   async findAll(req?: Request): Promise<User[]> {
-    console.log((req.user as { payload: Partial<User> }).payload);
     return await this.userRepository.find({
       where: { parent: { id: (req.user as { payload: Partial<User> })?.payload?.id } },
     })
