@@ -24,7 +24,6 @@
     "typeorm:create-migration": "npm run typeorm -- migration:create src/common/database/migrations/migration",
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
     "typeorm:revert-migrations": "npm run typeorm migration:revert -- -d ./typeorm.config.ts",
-    "database:seed": "node dist/src/common/database/seeders/user.seed.js",
     "seed": "npm run build && node dist/src/common/database/seeders/seed.js"
   },
   "dependencies": {
