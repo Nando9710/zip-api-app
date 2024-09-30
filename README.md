@@ -1,5 +1,9 @@
 # Zip REST API APP
 
+## Install NestJS CLI
+
+Run `npm install -g @nestjs/cli` to install NestJS CLI globally.
+
 ## Install dependencies
 
 Checkout to branch `production`. Run `pnpm install` to install all dependencies.
